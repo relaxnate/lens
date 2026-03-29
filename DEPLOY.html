@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deploy Lens — Step by Step</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #08090b; --surface: #0e1014; --card: #13151a;
+    --border: rgba(255,255,255,.08); --text: #e8eaf0; --muted: #5a5f72;
+    --muted2: #8890a8; --accent: #00e5ff; --green: #00ffb3; --amber: #ffb830;
+    --red: #ff4d6a; --mono: 'DM Mono', monospace; --display: 'Syne', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--mono); font-size: 13px; padding: 40px 20px; max-width: 760px; margin: 0 auto; line-height: 1.8; }
+  h1 { font-family: var(--display); font-size: 32px; font-weight: 800; color: var(--accent); letter-spacing: -1.5px; margin-bottom: 6px; }
+  .sub { color: var(--muted2); margin-bottom: 40px; font-size: 13px; }
+  h2 { font-family: var(--display); font-size: 16px; font-weight: 700; color: var(--text); margin: 32px 0 14px; display: flex; align-items: center; gap: 10px; }
+  .step-num { width: 28px; height: 28px; border-radius: 50%; background: rgba(0,229,255,.1); border: 1px solid rgba(0,229,255,.3); color: var(--accent); font-size: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: var(--mono); }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px 22px; margin-bottom: 12px; }
+  .card p { color: var(--muted2); margin-bottom: 8px; }
+  .card p:last-child { margin-bottom: 0; }
+  code { font-family: var(--mono); background: rgba(0,229,255,.08); border: 1px solid rgba(0,229,255,.15); padding: 2px 8px; border-radius: 5px; color: var(--accent); font-size: 12px; }
+  .cmd { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; font-family: var(--mono); font-size: 12px; color: var(--green); margin: 10px 0; overflow-x: auto; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .warn { background: rgba(255,184,48,.06); border: 1px solid rgba(255,184,48,.2); border-radius: 10px; padding: 14px 18px; color: var(--amber); margin: 20px 0; font-size: 12px; }
+  .ok { background: rgba(0,255,179,.05); border: 1px solid rgba(0,255,179,.2); border-radius: 10px; padding: 14px 18px; color: var(--green); margin: 20px 0; font-size: 12px; }
+  .tag { display: inline-block; padding: 2px 9px; border-radius: 20px; font-size: 10px; background: rgba(0,229,255,.1); color: var(--accent); border: 1px solid rgba(0,229,255,.2); margin-left: 8px; vertical-align: middle; }
+  hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+</style>
+</head>
+<body>
+
+<h1>Deploy Lens</h1>
+<p class="sub">Free hosting · Any computer · 5 minutes · No install needed on any machine</p>
+
+<div class="ok">
+  ✅ Once deployed, anyone can use Lens by visiting a URL. No setup on their end. Works on school computers, library computers, phones — anything with a browser.
+</div>
+
+<h2><span class="step-num">1</span> Get your Anthropic API Key <span class="tag">free to start</span></h2>
+<div class="card">
+  <p>Go to <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> → Sign up (free) → Click <strong>API Keys</strong> → Create a new key</p>
+  <p>Copy the key — it looks like: <code>sk-ant-api03-…</code></p>
+  <p>Anthropic gives you free credits to start. Claude Haiku costs about <strong>$0.001 per message</strong> — very cheap.</p>
+</div>
+
+<h2><span class="step-num">2</span> Upload the project to GitHub <span class="tag">free</span></h2>
+<div class="card">
+  <p>1. Create a free account at <a href="https://github.com" target="_blank">github.com</a></p>
+  <p>2. Click <strong>New repository</strong> → name it <code>lens</code> → Public → Create</p>
+  <p>3. Upload all the files from the <code>lens/</code> folder you downloaded (drag them in via the GitHub web UI):</p>
+  <div class="cmd">lens/
+  ├── package.json
+  ├── backend/
+  │   └── server.js
+  └── frontend/
+      └── index.html</div>
+  <p>Make sure the folder structure stays the same when uploading.</p>
+</div>
+
+<h2><span class="step-num">3</span> Deploy on Render.com <span class="tag">free tier available</span></h2>
+<div class="card">
+  <p>1. Go to <a href="https://render.com" target="_blank">render.com</a> → Sign up with your GitHub account</p>
+  <p>2. Click <strong>New +</strong> → <strong>Web Service</strong></p>
+  <p>3. Connect your GitHub repo (<code>lens</code>)</p>
+  <p>4. Fill in these settings:</p>
+  <div class="cmd">Name:        lens (or anything you want)
+Runtime:     Node
+Build cmd:   npm install
+Start cmd:   npm start
+Branch:      main</div>
+  <p>5. Scroll to <strong>Environment Variables</strong> → click <strong>Add Environment Variable</strong>:</p>
+  <div class="cmd">Key:    ANTHROPIC_API_KEY
+Value:  sk-ant-api03-your-actual-key-here</div>
+  <p>6. Click <strong>Create Web Service</strong> → wait ~2 minutes for it to build</p>
+</div>
+
+<h2><span class="step-num">4</span> Get your URL and share it</h2>
+<div class="card">
+  <p>Render gives you a free URL like:</p>
+  <div class="cmd">https://lens-abcd.onrender.com</div>
+  <p>That's it. Open that URL on any computer — it just works.</p>
+  <p>Bookmark it. Share it with yourself. Works on any device with a browser.</p>
+</div>
+
+<div class="warn">
+  ⚠ <strong>Free tier note:</strong> Render's free tier "sleeps" after 15 minutes of inactivity. The first load after sleeping takes ~30 seconds to wake up. To avoid this, upgrade to Render's $7/month plan, or use <a href="https://railway.app" target="_blank">Railway.app</a> which has a more generous free tier.
+</div>
+
+<hr>
+
+<h2>Alternative: Railway.app</h2>
+<div class="card">
+  <p>If you prefer Railway (better free tier, faster cold starts):</p>
+  <p>1. Go to <a href="https://railway.app" target="_blank">railway.app</a> → Login with GitHub</p>
+  <p>2. New Project → Deploy from GitHub → select <code>lens</code></p>
+  <p>3. Add variable: <code>ANTHROPIC_API_KEY</code> = your key</p>
+  <p>4. Railway auto-detects Node and deploys. Done.</p>
+</div>
+
+<hr>
+
+<div class="ok">
+  ✅ <strong>Your API key stays secret on the server.</strong> Nobody visiting the site can see it. All they see is the chat interface. You pay for the API calls but the key is safe.
+</div>
+
+</body>
+</html>
